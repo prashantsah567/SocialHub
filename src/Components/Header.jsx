@@ -8,8 +8,10 @@ const Header = () =>{
             <div className="header">
                 <p className="title">SocialHub</p>
                 <div className="filter">Filter-by-Flag</div>
-                <p className="user-image">user-image</p>
-                <div className="user-name">user-name</div>
+                <div className="img-and-username">
+                    <p className="user-image">user-image</p>
+                    <p className="user-name">user-name</p>
+                </div>
             </div>
         </div>
     )

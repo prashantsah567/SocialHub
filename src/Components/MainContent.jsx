@@ -7,10 +7,14 @@ const MainContent = () =>{
         <div className="container">
             <div className="row">
                 <div className="col1">
-                    <p>this is column 1st</p>
+                    <div className="post-box">
+                        <textarea placeholder="What's on your mind?"></textarea>
+                        <button className="btn-img-upload">Add Image</button>
+                        <button className="btn-post">Post</button>
+                    </div>
                 </div>
                 <div className="col2">
-                    <p>this is column 2nd</p>
+                    <p className="new-user-header">New Users</p>
                 </div>
             </div>
         </div>

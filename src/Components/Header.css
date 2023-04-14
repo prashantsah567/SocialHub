@@ -14,14 +14,10 @@
     transform: rotate(-4deg);
 }
 
-.filter{
-    
+.img-and-username{
+    display: flex;
 }
 
 .user-image{
-    
-}
-
-.user-name{
-
+    margin-right: 5px;
 }
