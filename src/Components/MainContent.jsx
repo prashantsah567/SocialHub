@@ -1,5 +1,6 @@
 import React from "react";
 import './MainContent.css';
+import Post from './Post';
 
 const MainContent = () =>{
 
@@ -11,6 +12,10 @@ const MainContent = () =>{
                         <textarea placeholder="What's on your mind?"></textarea>
                         <button className="btn-img-upload">Add Image</button>
                         <button className="btn-post">Post</button>
+                    </div>
+                    <div className="posts">
+                        {/* this section has the updated contents */}
+                        <Post />
                     </div>
                 </div>
                 <div className="col2">

@@ -1,0 +1,27 @@
+.post-card{
+    display: block;
+    box-shadow: 0 4px 16px 0 rgba(31,38,135,.27);
+    width: 70%;
+    border-radius: 10px;
+    margin-left: 20%;
+    margin-top: 20px;
+}
+
+.post-header{
+    font-size: large;
+    font-weight: bold;
+    padding: 5px;
+    background-color: rgb(225, 225, 225);
+    text-align: left;
+}
+
+.post-body{
+    padding: 5px;
+    text-align: left;
+}
+
+.post-like-comment{
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+}
