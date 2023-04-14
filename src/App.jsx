@@ -1,10 +1,13 @@
 import React from 'react';
+import Header from './Components/Header';
+import MainContent from './Components/MainContent';
 
 function App() {
 
   return (
     <div className="App">
-      <p>All set</p>
+      <Header />
+      <MainContent />
     </div>
   )
 }

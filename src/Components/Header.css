@@ -1,0 +1,27 @@
+.header{
+    background-color: #e5fb1f!important;
+    height: 70px;
+    box-shadow: 0 8px 32px 0 rgba(31,38,135,.27);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 5%;
+}
+
+.title{
+    font-size: x-large;
+    font-weight: bold;
+    transform: rotate(-4deg);
+}
+
+.filter{
+    
+}
+
+.user-image{
+    
+}
+
+.user-name{
+
+}
