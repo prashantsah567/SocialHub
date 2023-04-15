@@ -31,7 +31,7 @@ const MainContent = () =>{
     //fetching data from db - PostInfo (table)
     useEffect(() =>{
         async function fetchData(){
-            const{data, error} = await supabase.from('PostInfo').select('*');
+            const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
             if(error) console.log('Error fetching data:', error);
             else setUserData(data);
         }
@@ -48,22 +48,7 @@ const MainContent = () =>{
                         <button className="btn-post" onClick={submit}>Post</button>
                     </div>
                     {/* updates the post by retrieving data from db */}
-                    
                     <div className="posts">
-                        {/* {
-                            userData.map((user) => {
-                                <div key={user.id}>
-                                    
-                                    <Post 
-                                        id={user.id}
-                                        time={user.created_at}
-                                        username={user.username} 
-                                        postDetail={user.post_detail} 
-                                    />
-
-                                </div>
-                            })
-                        } */}
                         <Post userData={userData}/>
                     </div>
                 </div>
