@@ -16,14 +16,7 @@ const Post = (props) => {
         const date = dateTime.toLocaleDateString("en-US", { month: '2-digit', day: '2-digit', year: 'numeric' })
         const time = dateTime.toLocaleTimeString("en-US", {timeStyle: "medium"})
 
-        //for the image file
-        if(postImage != null){
-            const imageData = atob(postImage.image);
-            const imageDataUrl = `data:${image.type};base64,${imageData}`;
-            return {id, created_at:`${date} ${time}`, username, post_detail, imageDataUrl}
-        }else{
-            return {id, created_at:`${date} ${time}`, username, post_detail}
-        }
+        return {id, created_at:`${date} ${time}`, username, post_detail, postImage}
     })
 
     return(
@@ -40,7 +33,7 @@ const Post = (props) => {
                             <p>{user.post_detail}</p>
                         </div>
                         <div className="image">
-                            <img src={user.imageDataUrl} alt="cannot load" width="200" height="200" />
+                            {user.postImage && <img src={`data:image/png;base64,${user.postImage}`} alt="cannot load" width="300" height="200" />}
                         </div>
                         <hr />
                         <div className="post-like-comment">

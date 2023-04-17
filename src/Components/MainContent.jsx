@@ -20,23 +20,26 @@ const MainContent = () =>{
         setUserInput(e.target.value);
     }
 
-    const handleFileUpload = (e) =>{
+    const handleImageChange = (e) =>{
         const file = e.target.files[0];
-        setImageFile(file);
-
+        const reader = new FileReader();
+        reader.onload = (e) =>{
+            setImageFile(e.target.result);
+        };
+        reader.readAsDataURL(file);
     }
     //inserting the user data into supabasedb - PostInfo (table)
     const submit = async() =>{
-        //to process and insert the image file
-        const reader = new FileReader();
-        reader.readAsDataURL(imageFile);
-        const base64String = reader.result.replace('data:','').replace(/^.+,/, '');
 
         const {data, error} = await supabase.from('PostInfo').insert([
-            {username: 'Test-User', post_detail: userInput, postImage: {image: base64String}},
+            {username: 'Test-User', post_detail: userInput, postImage: imageFile.split(',')[1],}
         ])
-        if(error) console.log('Error Inserting data:',error)
-        else console.log('Data inserted successfully:');
+        if(error){
+            console.log(error);
+        }
+        else {
+            alert('Image uploaded successfully:'); 
+        }
     }
 
     //fetching data from db - PostInfo (table)
@@ -55,7 +58,7 @@ const MainContent = () =>{
                 <div className="col1">
                     <div className="post-box">
                         <textarea placeholder="What's on your mind?" value={userInput} onChange={handleTextInput}></textarea>
-                        <input type="file" onChange={handleFileUpload} />
+                        Image: <input type="file" accept="image/*" onChange={handleImageChange} />
                         <button className="btn-img-upload">Add Image</button>
                         <button className="btn-post" onClick={submit}>Post</button>
                     </div>
