@@ -14,6 +14,7 @@ const MainContent = () =>{
     const [userInput, setUserInput] = useState('');
     const [userData, setUserData] = useState([]);
     const [imageFile, setImageFile] = useState(null);
+    const [showImageInput, setShowImageInput] = useState(false);
 
     //to handle the change in user input for post
     const handleTextInput = (e) =>{
@@ -28,18 +29,31 @@ const MainContent = () =>{
         };
         reader.readAsDataURL(file);
     }
+
+    //Issue - we cannot post without uploading image
+
+    const handleImageBtn = () =>{
+        setShowImageInput(true);
+    }
     //inserting the user data into supabasedb - PostInfo (table)
     const submit = async() =>{
 
-        const {data, error} = await supabase.from('PostInfo').insert([
-            {username: 'Test-User', post_detail: userInput, postImage: imageFile.split(',')[1],}
-        ])
-        if(error){
-            console.log(error);
+        if(imageFile){
+            const {data, error} = await supabase.from('PostInfo').insert([
+                {username: 'Test-User', post_detail: userInput, postImage: imageFile.split(',')[1],}
+            ])
+        // if(error){
+        //     console.log(error);
+        // }
+        // else {
+        //     alert('Image uploaded successfully:'); 
+        // }
+        }else{
+            const {data, error} = await supabase.from('PostInfo').insert([
+                {username: 'Test-User', post_detail: userInput,}
+            ])
         }
-        else {
-            alert('Image uploaded successfully:'); 
-        }
+        
     }
 
     //fetching data from db - PostInfo (table)
@@ -58,8 +72,8 @@ const MainContent = () =>{
                 <div className="col1">
                     <div className="post-box">
                         <textarea placeholder="What's on your mind?" value={userInput} onChange={handleTextInput}></textarea>
-                        Image: <input type="file" accept="image/*" onChange={handleImageChange} />
-                        <button className="btn-img-upload">Add Image</button>
+                        {showImageInput && <input type="file" accept="image/*" onChange={handleImageChange} />}
+                        <button className="btn-img-upload" onClick={handleImageBtn}>Add Image</button>
                         <button className="btn-post" onClick={submit}>Post</button>
                     </div>
                     {/* updates the post by retrieving data from db */}

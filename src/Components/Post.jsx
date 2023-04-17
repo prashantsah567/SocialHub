@@ -4,8 +4,8 @@ import './Post.css';
 const Post = (props) => {
     const {userData} = props
 
-    if (userData.length === 0) {
-        return <div>No Post yet</div>
+    if(userData.length === 0){
+        return <div>No post yet</div>
     }
     //format the time and date
     const formattedUsers = userData.map((user)=>{
@@ -33,7 +33,7 @@ const Post = (props) => {
                             <p>{user.post_detail}</p>
                         </div>
                         <div className="image">
-                            {user.postImage && <img src={`data:image/png;base64,${user.postImage}`} alt="cannot load" width="300" height="200" />}
+                            {user.postImage && <img src={`data:image/png;base64,${user.postImage}`} alt="cannot load" width="100%" height="auto"/>}
                         </div>
                         <hr />
                         <div className="post-like-comment">
