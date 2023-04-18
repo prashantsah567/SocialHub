@@ -38,7 +38,7 @@ const MainContent = () =>{
     //inserting the user data into supabasedb - PostInfo (table)
     const submit = async() =>{
 
-        if(imageFile){
+        if(imageFile && userInput != ''){
             const {data, error} = await supabase.from('PostInfo').insert([
                 {username: 'Test-User', post_detail: userInput, postImage: imageFile.split(',')[1],}
             ])
@@ -48,7 +48,7 @@ const MainContent = () =>{
         // else {
         //     alert('Image uploaded successfully:'); 
         // }
-        }else{
+        }else if(userInput != ''){
             const {data, error} = await supabase.from('PostInfo').insert([
                 {username: 'Test-User', post_detail: userInput,}
             ])
@@ -58,6 +58,11 @@ const MainContent = () =>{
 
     //fetching data from db - PostInfo (table)
     useEffect(() =>{
+        // const fetchData = async() =>{
+        //     const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
+        //     if(error) console.log('Error fetching data:', error);
+        //     else setUserData(data);
+        // }
         async function fetchData(){
             const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
             if(error) console.log('Error fetching data:', error);

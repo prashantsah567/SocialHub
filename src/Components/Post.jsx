@@ -5,7 +5,7 @@ const Post = (props) => {
     const {userData} = props
 
     if(userData.length === 0){
-        return <div>No post yet</div>
+        return <div>Loading...</div>
     }
     //format the time and date
     const formattedUsers = userData.map((user)=>{
