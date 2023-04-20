@@ -1,8 +1,10 @@
-import React from "react";
+import React,{useState} from "react";
 import './Post.css';
 
 const Post = (props) => {
     const {userData} = props
+    const [countUpvote, setCountUpvote] = useState(0);
+    const [countComment, setCountComment] = useState(0);
 
     if(userData.length === 0){
         return <div>Loading...</div>
@@ -18,6 +20,14 @@ const Post = (props) => {
 
         return {id, created_at:`${date} ${time}`, username, post_detail, postImage}
     })
+
+    const handleUpvote = () => {
+        setCountUpvote(countUpvote+1);
+    }
+
+    const handleComment = () => {
+        setCountComment(countComment+1);
+    }
 
     return(
         <div>
@@ -36,9 +46,13 @@ const Post = (props) => {
                             {user.postImage && <img src={`data:image/png;base64,${user.postImage}`} alt="cannot load" width="100%" height="auto"/>}
                         </div>
                         <hr />
-                        <div className="post-like-comment">
-                            <button>Like</button>
-                            <button>comment</button>
+                        <div className="count-upvote-comment">
+                            <p>{countUpvote} <small>Upvote</small></p>
+                            <p>{countComment} <small>Comments</small></p>
+                        </div>
+                        <div className="post-upvote-comment">
+                            <button className="upvote" onClick={handleUpvote}>Upvote</button>
+                            <button className="comment" onClick={handleComment}>Comment</button>
                         </div>
                     </div>
                 ))

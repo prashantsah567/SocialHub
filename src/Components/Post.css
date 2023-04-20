@@ -18,12 +18,6 @@
     text-align: left;
 }
 
-.post-like-comment{
-    padding: 5px;
-    display: flex;
-    justify-content: space-around;
-}
-
 .post-header-username{
     font-size: large;
     font-weight: bold;
@@ -36,7 +30,30 @@
     font-size: small;
 }
 
-/* .image{
-    width: 100%;
-    height: auto;
-} */
+.count-upvote-comment{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-upvote-comment{
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.upvote, .comment{
+    width: 49%;
+    cursor: pointer;
+    border: none;
+    font-size: 12px;
+    height: 30px;
+    font-weight: bold;
+    background-color: #ecedec;
+    transition: background-color 0.3s ease;
+}
+
+.upvote:hover, .comment:hover{
+    background-color: #202030;
+    color: white;
+}

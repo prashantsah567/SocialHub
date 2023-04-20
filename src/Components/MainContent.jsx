@@ -1,20 +1,19 @@
 import React, {useState, useEffect} from "react";
 import { createClient } from "@supabase/supabase-js";
+import {SUPABASE_URL,SUPABASE_KEY} from '../supabaseConfig';
 import './MainContent.css';
 import Post from './Post';
 
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const MainContent = () =>{
 
-    //establishing the connection with supabase
-    const supabaseUrl = 'https://iqpfwknfalacvxyumiba.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxcGZ3a25mYWxhY3Z4eXVtaWJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODE1Nzk3NDcsImV4cCI6MTk5NzE1NTc0N30.LNGADTjW_IP91_BFO6CLiXFqjgpI2wAS4hYDTSP5Xt0';
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    //state variables
     const [userInput, setUserInput] = useState('');
     const [userData, setUserData] = useState([]);
     const [imageFile, setImageFile] = useState(null);
     const [showImageInput, setShowImageInput] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     //to handle the change in user input for post
     const handleTextInput = (e) =>{
@@ -30,46 +29,68 @@ const MainContent = () =>{
         reader.readAsDataURL(file);
     }
 
-    //Issue - we cannot post without uploading image
-
     const handleImageBtn = () =>{
         setShowImageInput(true);
     }
     //inserting the user data into supabasedb - PostInfo (table)
     const submit = async() =>{
 
-        if(imageFile && userInput != ''){
+        if(imageFile && userInput !== ''){
+            setIsLoading(true);
             const {data, error} = await supabase.from('PostInfo').insert([
-                {username: 'Test-User', post_detail: userInput, postImage: imageFile.split(',')[1],}
-            ])
-        // if(error){
-        //     console.log(error);
-        // }
-        // else {
-        //     alert('Image uploaded successfully:'); 
-        // }
+                {username: 'Test-User', post_detail: userInput, postImage: imageFile.split(',')[1],},
+            ]);
+            setIsLoading(false);
+            if(error){
+                setError(error.message);
+            }else{
+                setUserInput("");
+                setImageFile(null);
+                setShowImageInput(false);
+            }
         }else if(userInput != ''){
+            setIsLoading(true);
             const {data, error} = await supabase.from('PostInfo').insert([
-                {username: 'Test-User', post_detail: userInput,}
-            ])
+                {username: 'Test-User', post_detail: userInput,},
+            ]);
+            setIsLoading(false);
+            if(error){
+                setError(error.message);
+            }else{
+                setUserInput("");
+                setImageFile(null);
+                setShowImageInput(false);
+            }
         }
         
-    }
+    };
 
     //fetching data from db - PostInfo (table)
     useEffect(() =>{
-        // const fetchData = async() =>{
+        const fetchData = async() =>{
+            setIsLoading(true);
+            const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
+            setIsLoading(false);
+            if(error) setError(error.message);
+            else setUserData(data);
+        }
+        // async function fetchData(){
         //     const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
         //     if(error) console.log('Error fetching data:', error);
         //     else setUserData(data);
         // }
+        fetchData();
+    },[])
+
+    useEffect(() =>{
+        //runs if there is any update in the db -- (change on userData)
         async function fetchData(){
             const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
             if(error) console.log('Error fetching data:', error);
             else setUserData(data);
         }
         fetchData()
-    },[userData])
+    },[userData, imageFile])
 
     return(
         <div className="container">
