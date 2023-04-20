@@ -32,6 +32,12 @@ const MainContent = () =>{
     const handleImageBtn = () =>{
         setShowImageInput(true);
     }
+
+    //fetching the data
+    useEffect(() =>{
+        fetchData();
+    },[])
+
     //inserting the user data into supabasedb - PostInfo (table)
     const submit = async() =>{
 
@@ -40,6 +46,7 @@ const MainContent = () =>{
             const {data, error} = await supabase.from('PostInfo').insert([
                 {username: 'Test-User', post_detail: userInput, postImage: imageFile.split(',')[1],},
             ]);
+            fetchData(); //to reload the updated data from db
             setIsLoading(false);
             if(error){
                 setError(error.message);
@@ -53,6 +60,7 @@ const MainContent = () =>{
             const {data, error} = await supabase.from('PostInfo').insert([
                 {username: 'Test-User', post_detail: userInput,},
             ]);
+            fetchData(); //to reload the updated data from db
             setIsLoading(false);
             if(error){
                 setError(error.message);
@@ -66,52 +74,36 @@ const MainContent = () =>{
     };
 
     //fetching data from db - PostInfo (table)
-    useEffect(() =>{
-        const fetchData = async() =>{
-            setIsLoading(true);
-            const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
-            setIsLoading(false);
-            if(error) setError(error.message);
-            else setUserData(data);
-        }
-        // async function fetchData(){
-        //     const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
-        //     if(error) console.log('Error fetching data:', error);
-        //     else setUserData(data);
-        // }
-        fetchData();
-    },[])
-
-    useEffect(() =>{
-        //runs if there is any update in the db -- (change on userData)
-        async function fetchData(){
-            const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
-            if(error) console.log('Error fetching data:', error);
-            else setUserData(data);
-        }
-        fetchData()
-    },[userData, imageFile])
+    const fetchData = async() =>{
+        setIsLoading(true);
+        const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
+        setIsLoading(false);
+        if(error) setError(error.message);
+        else setUserData(data);
+    }
 
     return(
-        <div className="container">
-            <div className="row">
-                <div className="col1">
-                    <div className="post-box">
-                        <textarea placeholder="What's on your mind?" value={userInput} onChange={handleTextInput}></textarea>
-                        {showImageInput && <input type="file" accept="image/*" onChange={handleImageChange} />}
-                        <button className="btn-img-upload" onClick={handleImageBtn}>Add Image</button>
-                        <button className="btn-post" onClick={submit}>Post</button>
-                    </div>
-                    {/* updates the post by retrieving data from db */}
-                    <div className="posts">
-                        <Post userData={userData}/>
-                    </div>
+    <div className="container">
+        <div className="row">
+            <div className="col1">
+                <div className="post-box">
+                    <textarea placeholder="What's on your mind?" value={userInput} onChange={handleTextInput}></textarea>
+                    {showImageInput && <input type="file" accept="image/*" onChange={handleImageChange} />}
+                    <button className="btn-img-upload" onClick={handleImageBtn}>Add Image</button>
+                    <button className="btn-post" onClick={submit}>Post</button>
                 </div>
-                <div className="col2">
-                    <p className="new-user-header">New Users</p>
+                {/* updates the post by retrieving data from db */}
+                <div className="posts">
+                {isLoading ? (<div className='loading'>Loading...</div>):
+                    <Post userData={userData}/>
+                }   
                 </div>
             </div>
+            <div className="col2">
+                <p className="new-user-header">New Users</p>
+            </div>
         </div>
+    </div>
     )
 }
 

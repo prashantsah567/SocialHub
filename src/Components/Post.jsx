@@ -7,7 +7,7 @@ const Post = (props) => {
     const [countComment, setCountComment] = useState(0);
 
     if(userData.length === 0){
-        return <div>Loading...</div>
+        return <div>No post yet</div>
     }
     //format the time and date
     const formattedUsers = userData.map((user)=>{
