@@ -94,9 +94,8 @@ const MainContent = () =>{
                 </div>
                 {/* updates the post by retrieving data from db */}
                 <div className="posts">
-                {isLoading ? (<div className='loading'>Loading...</div>):
-                    <Post userData={userData}/>
-                }   
+                {isLoading ? (<div className='loading'>Loading...</div>):""}   
+                <Post userData={userData}/>
                 </div>
             </div>
             <div className="col2">
