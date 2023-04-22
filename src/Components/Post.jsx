@@ -2,6 +2,8 @@ import React,{useState} from "react";
 import './Post.css';
 import { createClient } from "@supabase/supabase-js";
 import {SUPABASE_URL,SUPABASE_KEY} from '../supabaseConfig';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -50,8 +52,9 @@ const Post = (props) => {
     
                     <div className="post-card" key={user.id}>
                         <div className="post-header">
+                            <span className="user-icon"></span>
                             <span className="post-header-username">{user.username}</span>
-                            <span className="post-header-time">{user.created_at}</span>
+                            <span className="post-header-time">Posted at {user.created_at}</span>
                         </div>
                         <div className="post-body">
                             <p>{user.post_detail}</p>
