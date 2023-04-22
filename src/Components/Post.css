@@ -80,3 +80,14 @@
     background-size: cover;
     border-radius: 50%;
   }
+
+  .delBtn{
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    background-color: rgb(236, 236, 236);
+  }
+
+  .delIcon{
+    color:red;
+  }

@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import {SUPABASE_URL,SUPABASE_KEY} from '../supabaseConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
+import {FaTrash} from "react-icons/fa";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -55,6 +56,7 @@ const Post = (props) => {
                             <span className="user-icon"></span>
                             <span className="post-header-username">{user.username}</span>
                             <span className="post-header-time">Posted at {user.created_at}</span>
+                            {(user.username == props.userName)?(<button className="delBtn"><FaTrash className="delIcon"/></button>):''}
                         </div>
                         <div className="post-body">
                             <p>{user.post_detail}</p>

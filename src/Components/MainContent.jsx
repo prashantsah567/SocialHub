@@ -95,7 +95,7 @@ const MainContent = (props) =>{
                 {/* updates the post by retrieving data from db */}
                 <div className="posts">
                 {isLoading ? (<div className='loading'>Loading...</div>):""}   
-                <Post userData={userData}/>
+                <Post userData={userData} userName={props.userName}/>
                 </div>
             </div>
             <div className="col2">
