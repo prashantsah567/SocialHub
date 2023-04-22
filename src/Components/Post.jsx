@@ -2,14 +2,14 @@ import React,{useState} from "react";
 import './Post.css';
 import { createClient } from "@supabase/supabase-js";
 import {SUPABASE_URL,SUPABASE_KEY} from '../supabaseConfig';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
 import {FaTrash} from "react-icons/fa";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const Post = (props) => {
-    const {userData} = props
+    const {userData}= props;
+    const [isLoading, setIsLoading] = useState(false);
+    // const [userInfo, setUserInfo] = useState([]);
     const [countUpvote, setCountUpvote] = useState(props.userData.upvote);
     console.log(countUpvote);
     const [countComment, setCountComment] = useState(0);
@@ -26,8 +26,25 @@ const Post = (props) => {
         const date = dateTime.toLocaleDateString("en-US", { month: '2-digit', day: '2-digit', year: 'numeric' })
         const time = dateTime.toLocaleTimeString("en-US", {timeStyle: "medium"})
 
+        //added code for delete
+        // function handleDelete(){
+        //     deletePost(id);
+        // }
+
         return {id, created_at:`${date} ${time}`, username, post_detail, postImage, upvote}
     })
+
+    //fetching data from db - PostInfo (table)
+    // const fetchData = async() =>{
+    //     setIsLoading(true);
+    //     const{data, error} = await supabase.from('PostInfo').select('*').order("id",{ascending:false});
+    //     setIsLoading(false);
+    //     if(error) setError(error.message);
+    //     else {
+    //         userData(data); 
+    //         formattedUsers();
+    //     }
+    // }
 
     const handleUpvote = async() => {
         
@@ -46,17 +63,45 @@ const Post = (props) => {
         setCountComment(countComment+1);
     }
 
+    //to handle the delete operation
+    async function deletePost(id){
+        
+        setIsLoading(true);
+        const {data,error} = await supabase.from('PostInfo').delete().eq('id',id);
+        if(error){
+            console.error('Error deleting row:',error)
+        }else{
+            console.log("delete success with id: ", id);
+        }
+        setIsLoading(false);
+    }
+
+    //  //to handle the delete operation
+    //  const handleDelete = async() =>{
+    //     setIsLoading(true);
+    //     const {data,error} = await supabase.from('PostInfo').delete().eq('id',47);
+    //     if(error){
+    //         console.error('Error deleting row:',error)
+    //     }else{
+    //         console.log("delete success with id: ", id);
+    //     }
+    //     fetchData();
+    //     setIsLoading(false);
+    // }
+
     return(
+        <>
+        {isLoading ? (<div className='loading'>Loading...</div>):""}
         <div>
             {
                 formattedUsers.map((user) =>(
-    
+                    
                     <div className="post-card" key={user.id}>
                         <div className="post-header">
                             <span className="user-icon"></span>
                             <span className="post-header-username">{user.username}</span>
                             <span className="post-header-time">Posted at {user.created_at}</span>
-                            {(user.username == props.userName)?(<button className="delBtn"><FaTrash className="delIcon"/></button>):''}
+                            {(user.username == props.userName)?(<button className="delBtn" onClick={() => deletePost(user.id)}><FaTrash className="delIcon"/></button>):''}
                         </div>
                         <div className="post-body">
                             <p>{user.post_detail}</p>
@@ -77,6 +122,7 @@ const Post = (props) => {
                 ))
             }
         </div>
+        </>
     )
 }
 
