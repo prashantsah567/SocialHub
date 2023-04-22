@@ -6,7 +6,7 @@ import Post from './Post';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const MainContent = () =>{
+const MainContent = (props) =>{
 
     const [userInput, setUserInput] = useState('');
     const [userData, setUserData] = useState([]);
@@ -44,7 +44,7 @@ const MainContent = () =>{
         if(imageFile && userInput !== ''){
             setIsLoading(true);
             const {data, error} = await supabase.from('PostInfo').insert([
-                {username: 'Test-User', post_detail: userInput, postImage: imageFile.split(',')[1],},
+                {username: props.userName, post_detail: userInput, postImage: imageFile.split(',')[1],},
             ]);
             fetchData(); //to reload the updated data from db
             setIsLoading(false);
@@ -58,7 +58,7 @@ const MainContent = () =>{
         }else if(userInput != ''){
             setIsLoading(true);
             const {data, error} = await supabase.from('PostInfo').insert([
-                {username: 'Test-User', post_detail: userInput,},
+                {username: props.userName, post_detail: userInput,},
             ]);
             fetchData(); //to reload the updated data from db
             setIsLoading(false);

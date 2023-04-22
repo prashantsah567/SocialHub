@@ -1,7 +1,7 @@
 import React from "react";
 import './Header.css';
 
-const Header = () =>{
+const Header = (props) =>{
 
     return(
         <div>
@@ -10,7 +10,7 @@ const Header = () =>{
                 <div className="filter">Filter-by-Flag</div>
                 <div className="img-and-username">
                     <p className="user-image">user-image</p>
-                    <p className="user-name">user-name</p>
+                    <p className="user-name">{props.userName}</p>
                 </div>
             </div>
         </div>
