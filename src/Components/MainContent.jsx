@@ -14,6 +14,7 @@ const MainContent = (props) =>{
     const [showImageInput, setShowImageInput] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [users, setUsers] = useState([]);
 
     //to handle the change in user input for post
     const handleTextInput = (e) =>{
@@ -82,6 +83,22 @@ const MainContent = (props) =>{
         else setUserData(data);
     }
 
+    //for the username
+    useEffect(() => {
+        getUsers();
+    }, []);
+
+    const getUsers = async()=> {
+      const { data, error } = await supabase.from('PostInfo').select('*');
+
+      if (error) {
+        console.log(error);
+      } else {
+        setUsers(users);
+        console.log(users);
+      }
+    }
+
     return(
     <div className="container">
         <div className="row">
@@ -100,6 +117,12 @@ const MainContent = (props) =>{
             </div>
             <div className="col2">
                 <p className="new-user-header">New Users</p>
+                {/* here i want to display all the list of users */}
+                <ul>
+                    {users.map((user) =>(
+                        <li key={user.id}>{user.username}</li>
+                    ))}
+                </ul>
             </div>
         </div>
     </div>
